@@ -1,6 +1,6 @@
-﻿namespace Cliente
+﻿namespace Servidor
 {
-    partial class Form1
+    partial class ServidorForm
     {
         /// <summary>
         /// Variable del diseñador necesaria.
