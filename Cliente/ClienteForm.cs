@@ -22,13 +22,12 @@ namespace Cliente
 
         private void ClienteForm_Load(object sender, EventArgs e)
         {
-
-            //Closing += ClienteForm_FormClosing;
             conexionTcp.OnDataRecieved += MensajeRecibido;
 
             if (!conexionTcp.Connectar(IPADDRESS, PORT))
             {
                 MessageBox.Show("¡Error conectando con el servidor!");
+                return;
             }
         }
 
@@ -36,6 +35,9 @@ namespace Cliente
         {
             var paquete = new Paquete(datos);
             string comando = paquete.Comando;
+
+            //MESSAGEBOX DE COMPROBACION
+            MessageBox.Show(string.Format("{0}:{1}",paquete.Comando,paquete.Contenido));
             if (comando == "resultado")
             {
                 string contenido = paquete.Contenido;
@@ -61,7 +63,7 @@ namespace Cliente
             {
                 textBox3.Text = "Servidor desconectado, intentando reconexión...";
 
-                Closing += ClienteForm_FormClosing;
+                //Closing += ClienteForm_FormClosing;
                 conexionTcp.OnDataRecieved += MensajeRecibido;
 
                 if (!conexionTcp.Connectar(IPADDRESS, PORT))

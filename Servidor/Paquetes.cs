@@ -8,5 +8,12 @@ namespace Servidor
 {
     public class Paquetes
     {
+        public static Paquete LoginOk(string respuesta)
+
+        {
+
+            return new Paquete(respuesta);
+
+        }
     }
 }

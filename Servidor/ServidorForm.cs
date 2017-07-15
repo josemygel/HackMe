@@ -25,6 +25,8 @@ namespace Servidor
         private TcpListener _tcpListener;
         private Thread _acceptThread;
         private List<ConexionTcp> connectedClients = new List<ConexionTcp>();
+        private string ADDRESS = "127.0.0.1";
+        private int PORT = 1982;
 
         public ServidorForm()
         {
@@ -41,7 +43,7 @@ namespace Servidor
             OnClientConnected += ConexionRecibida;
             OnClientDisconnected += ConexionCerrada;
 
-            EscucharClientes("127.0.0.1", 1982);
+            EscucharClientes(ADDRESS, PORT);
         }
 
         private void MensajeRecibido(ConexionTcp conexionTcp, string datos)
@@ -129,7 +131,7 @@ namespace Servidor
                     MessageBox.Show(e.Message.ToString());
                 }
 
-            } while (true);
+            } while(true);
         }
 
         private void LeerDatos(object client)
@@ -193,7 +195,7 @@ namespace Servidor
             //Cierra puertos, conexiones, etc.
             Environment.Exit(0);
         }
-
+/*
         private void usuariosBindingNavigatorSaveItem_Click(object sender, EventArgs e)
         {
             this.Validate();
@@ -206,6 +208,6 @@ namespace Servidor
         {
             //this.usuariosTableAdapter.Fill(this.uNED.Usuarios);
         }
-        
+        */
     }
 }
