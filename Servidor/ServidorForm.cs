@@ -35,6 +35,14 @@ namespace Servidor
 
         private void ServidorForm_Load(object sender, EventArgs e)
         {
+            // TODO: esta línea de código carga datos en la tabla 'dataSet11.Conexiones' Puede moverla o quitarla según sea necesario.
+            this.conexionesTableAdapter.Fill(dataSet11.Conexiones);
+            // TODO: esta línea de código carga datos en la tabla 'dataSet11.Session' Puede moverla o quitarla según sea necesario.
+            this.sessionTableAdapter.Fill(dataSet11.Session);
+            // TODO: esta línea de código carga datos en la tabla 'dataSet11.Usuarios' Puede moverla o quitarla según sea necesario.
+            this.usuariosTableAdapter.Fill(dataSet11.Usuarios);
+
+
             // TODO: esta línea de código carga datos en la tabla 'uNED.Usuarios' Puede moverla o quitarla según sea necesario.
             //this.usuariosTableAdapter.Fill(this.uNED.Usuarios);
 
@@ -58,10 +66,20 @@ namespace Servidor
                 string contenido = paquete.Contenido;
                 List<string> valores = Mapa.Deserializar(contenido);
 
-                Invoke(new Action(() => textBox1.Text = valores[0]));
-                Invoke(new Action(() => textBox2.Text = valores[1]));
+                var msgPack = new Paquete();
 
-                var msgPack = new Paquete("resultado", "OK");
+                try
+                {
+                    usuariosTableAdapter.Fill(dataSet11.Usuarios);
+                    if (string.IsNullOrEmpty(dataSet11.Usuarios.Select(valores[0]).ToString()))
+                        msgPack = new Paquete("resultado", "Sesion Iniciada.");
+                }
+                catch (Exception)
+                {
+                    msgPack = new Paquete("resultado", "El usuario no existe, registrese.");
+                }
+                //usuariosTableAdapter.GetData()
+
                 conexionTcp.EnviarPaquete(msgPack);
             }
             
@@ -69,9 +87,20 @@ namespace Servidor
             {
                 string contenido = paquete.Contenido;
                 List<string> valores = Mapa.Deserializar(contenido);
-                //añadir try, y en caso de no poder insertar, mandar "error","Usuario ya existe"
-                //usuariosTableAdapter.Insert(valores[0], valores[1]);
-                var msgPack = new Paquete("resultado", "Registros en SQL: OK");
+                
+                var msgPack = new Paquete();
+
+                try
+                {
+                    usuariosTableAdapter.Insert(valores[0], valores[1]);
+                    usuariosTableAdapter.Update(dataSet11.Usuarios);
+                    usuariosTableAdapter.Fill(dataSet11.Usuarios);
+                    msgPack = new Paquete("resultado", "Registro realizado con éxito.");
+                }
+                catch (Exception)
+                {
+                    msgPack = new Paquete("resultado", "El usuario ya existe.");
+                }
                 conexionTcp.EnviarPaquete(msgPack);
             }
         }
@@ -136,6 +165,17 @@ namespace Servidor
 
         private void LeerDatos(object client)
         {
+
+            //METODO PARA OPTENER LA IP
+            string ip = ((IPEndPoint)(client as ConexionTcp).TcpClient.Client.RemoteEndPoint).Address.ToString();
+            if (!string.IsNullOrEmpty(ip))
+            {
+                conexionesTableAdapter.Insert(ip, DateTime.Now);
+                conexionesTableAdapter.Fill(dataSet11.Conexiones);
+            }
+
+
+
             /*
              * Profundizar en internet sobre la lectura del buffer
              */
@@ -195,19 +235,33 @@ namespace Servidor
             //Cierra puertos, conexiones, etc.
             Environment.Exit(0);
         }
+
+        private void usuariosBindingNavigatorSaveItem_Click(object sender, EventArgs e)
+        {
+            this.Validate();
+            this.usuariosBindingSource.EndEdit();
+            this.tableAdapterManager.UpdateAll(this.dataSet11);
+
+        }
+
+        private void bindingNavigatorAddNewItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
         /*
-       private void usuariosBindingNavigatorSaveItem_Click(object sender, EventArgs e)
-       {
-           this.Validate();
-           //this.usuariosBindingSource.EndEdit();
-           //this.tableAdapterManager.UpdateAll(this.uNED);
+private void usuariosBindingNavigatorSaveItem_Click(object sender, EventArgs e)
+{
+this.Validate();
+//this.usuariosBindingSource.EndEdit();
+//this.tableAdapterManager.UpdateAll(this.uNED);
 
-       }
+}
 
-       private void button1_Click(object sender, EventArgs e)
-       {
-           //this.usuariosTableAdapter.Fill(this.uNED.Usuarios);
-       }
-       */
+private void button1_Click(object sender, EventArgs e)
+{
+//this.usuariosTableAdapter.Fill(this.uNED.Usuarios);
+}
+*/
     }
 }

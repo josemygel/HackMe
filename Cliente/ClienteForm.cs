@@ -42,7 +42,7 @@ namespace Cliente
             {
                 string contenido = paquete.Contenido;
 
-                Invoke(new Action(() => label1.Text = string.Format("Respuesta:{0}", contenido)));
+                Invoke(new Action(() => textBox3.Text = contenido));
             }
         }
 
