@@ -195,19 +195,19 @@ namespace Servidor
             //Cierra puertos, conexiones, etc.
             Environment.Exit(0);
         }
-/*
-        private void usuariosBindingNavigatorSaveItem_Click(object sender, EventArgs e)
-        {
-            this.Validate();
-            //this.usuariosBindingSource.EndEdit();
-            //this.tableAdapterManager.UpdateAll(this.uNED);
+        /*
+       private void usuariosBindingNavigatorSaveItem_Click(object sender, EventArgs e)
+       {
+           this.Validate();
+           //this.usuariosBindingSource.EndEdit();
+           //this.tableAdapterManager.UpdateAll(this.uNED);
 
-        }
+       }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //this.usuariosTableAdapter.Fill(this.uNED.Usuarios);
-        }
-        */
+       private void button1_Click(object sender, EventArgs e)
+       {
+           //this.usuariosTableAdapter.Fill(this.uNED.Usuarios);
+       }
+       */
     }
 }

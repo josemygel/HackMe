@@ -70,6 +70,7 @@
             this.Name = "ServidorForm";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServidorForm_FormClosing);
+            this.Load += new System.EventHandler(this.ServidorForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
