@@ -65,7 +65,7 @@ namespace Servidor
                 conexionTcp.EnviarPaquete(msgPack);
             }
             
-            if (comando == "insertar")
+            if (comando == "register")
             {
                 string contenido = paquete.Contenido;
                 List<string> valores = Mapa.Deserializar(contenido);

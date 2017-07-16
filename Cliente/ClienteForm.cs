@@ -51,13 +51,11 @@ namespace Cliente
             Environment.Exit(0);
         }
 
-        //BOTON DE INICIAR SESION (CREAR PARA REGISTRARSE)
-        private void button1_Click(object sender, EventArgs e)
+        private bool clientConnected()
         {
-            if (conexionTcp.TcpClient.Connected)
+             if (conexionTcp.TcpClient.Connected)
             {
-                var msgLogin = new Paquete("login",string.Format("{0},{1}",textBox1.Text,textBox2.Text));
-                conexionTcp.EnviarPaquete(msgLogin);
+                return true;
             }
             else
             {
@@ -72,6 +70,40 @@ namespace Cliente
                 }
 
                 textBox3.Text = "";
+
+                return false;
+            }
+        }
+
+        //BOTON DE INICIAR SESION (CREAR PARA REGISTRARSE)
+        private void logButton_Click(object sender, EventArgs e)
+        {
+
+            if (string.IsNullOrEmpty(textBox1.Text))
+                MessageBox.Show("El campo de usuario está vacío, rellénelo por favor.");
+
+            else if (string.IsNullOrEmpty(textBox2.Text))
+                MessageBox.Show("El campo de contraseña está vacío, rellénelo por favor.");
+
+            else if (clientConnected())
+            {
+                var msgLogin = new Paquete("login",string.Format("{0},{1}",textBox1.Text,textBox2.Text));
+                conexionTcp.EnviarPaquete(msgLogin);
+            }
+        }
+
+        private void regButton_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBox1.Text))
+                MessageBox.Show("El campo de usuario está vacío, rellénelo por favor.");
+
+            else if (string.IsNullOrEmpty(textBox2.Text))
+                MessageBox.Show("El campo de contraseña está vacío, rellénelo por favor.");
+
+            else if (clientConnected())
+            {
+                var msgLogin = new Paquete("register", string.Format("{0},{1}", textBox1.Text, textBox2.Text));
+                conexionTcp.EnviarPaquete(msgLogin);
             }
         }
     }
